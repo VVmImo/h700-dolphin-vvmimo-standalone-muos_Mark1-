@@ -21,7 +21,7 @@ We welcome testers who can compare the supplied defaults with individual per-gam
 
 For this beta, **test only Game Settings and Game Patches**. Leave all other menus at the supplied defaults unless the maintainer specifically requests a diagnostic test.
 
-Read the [Beta Tester Manual — Game Settings & Game Patches](VVMIMO-BETA-GAME-SETTINGS-AND-PATCHES-EN.pdf) before testing. The full English manual and complete `.muxupd` distribution package accompany the release. Use the documents matching your build.
+Read the [Beta Tester Manual — Game Settings & Game Patches]([VVMIMO-BETA-GAME-SETTINGS-AND-PATCHES-EN.pdf)](https://github.com/VVmImo/h700-dolphin-vvmimo-standalone-muos_Mark1-/releases/download/H700_Dolphin_Emulator_Standalone_for_muOS/VVMIMO-BETA-GAME-SETTINGS-AND-PATCHES-EN.pdf) before testing. The full English manual and complete `.muxupd` distribution package accompany the release. Use the documents matching your build.
 
 Reports should include the device, muOS version, package/build, exact game ID, region/revision, changed settings, affected scene and a short video if possible.
 
