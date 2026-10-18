@@ -92,16 +92,34 @@ An unofficial, experimental Dolphin project for GameCube and supported Wii games
 
 The goal is practical playability on limited hardware: reduce emulation overhead, improve presentation and give each game its own configuration. This is a **standalone emulator**, with a dedicated configuration application—not a RetroArch/libretro core or a KNULLI package.
 
-## What makes this project different?
+## V.V.mImo development and contributions
 
-- Experimental PPC-to-ARM64 JIT optimizations and memory-access controls.
-- Automatic emulated CPU adjustment, independent VI controls and configurable scene profiles.
-- Rendering-cycle skipping and experimental frame generation to improve perceived smoothness.
-- Per-game graphics, emulation, audio and timing settings.
-- Custom patches for selected games, including selective effects, scenery and lighting reduction, native timing and memory expansion.
-- A configuration application, controller mappings, launcher, loading image and reset defaults.
+**Fork-specific development, configuration and integration: V.V.mImo, 2026.** This project builds on Dolphin Emulator and its dependencies. The contributions below describe implementations and integration developed within the V.V.mImo fork, not just a compilation of upstream Dolphin.
 
-Not every mechanism benefits every game. Frame generation does not make game logic faster, and a high FPS counter does not guarantee full-speed movement or synchronized sound. Compatibility and useful settings are recorded by exact game ID.
+### Implementation areas
+
+- **ARM64 JIT and memory access:** fork-specific FPR conversion experiments, inline quantized loads, persistent GPR links and fast-memory/MMU controls. Individual experiments remain optional and are not all enabled by default.
+- **Coordinated Near/Far JIT growth:** regions start at 4 MiB and grow in 4 MiB steps, up to 32 MiB Near and 48 MiB Far per region. Allocation considers contiguous space on both sides; grown capacities are retained across cache clears.
+- **Adaptive vertex and index buffers:** vertex capacity grows through 16/32/48 MiB and index capacity through 1/2/4/8/16 MiB. Synchronization pressure requests growth at a batch boundary; old storage remains until GPU completion and bindings are refreshed. Uniform buffers retain circular, synchronized reuse.
+- **CPU pressure and response control:** combines thread load, emulation progress, pacing sleep and FIFO/video pressure. Bounded trials evaluate the response and roll back when needed, rather than treating generated FPS as CPU demand.
+- **CPU/VI compensation:** distinguishes the effective CPU target from the applied clock value and compensates for VI scaling while CPU Load Control is active, preserving the underlying timing relationship and control ownership.
+- **VI control based on emulation speed:** an optional criterion uses emulation progress—the measure underlying OSD colors—instead of generated-frame counts. It retains trial/evaluation/rollback behavior, with five-percentage-point adjustment steps.
+- **Frame generation and presentation:** integrates prediction/interpolation, real-XFB cadence, history, confidence and delivery modes with configurable presentation and XFB skipping. Generated FPS includes real and predicted frames; predicted frames do not accelerate game logic.
+- **Graphics controls and reuse:** integrates optional geometry/lighting reduction, matrix batching, TEV reuse and EFB/XFB copy/readback paths. Their compatibility and cost differ; an available option is not necessarily enabled or beneficial in every game.
+- **Per-game patches and timing:** selected title/revision-specific hooks control effects, scenery, intros or simulation steps, using game/region/revision-specific addresses and signatures. These timing mechanisms are not a universal FPS limiter.
+- **Audio and real-frame cadence:** includes a SoundTouch input budget and handling of real-frame cadence separately from synthetic frames. Audio behavior below full emulation speed remains dependent on the game and settings.
+- **CRT filters and visual presentation:** project-specific CRT/scanline variants and other filters have selectable intensity and configuration-application integration. Attribution concerns the V.V.mImo files, modifications and integration, not the invention of CRT effects.
+- **Persistent internal-controller mapping:** a wizard reads raw SDL3 axes/buttons, requires testing before saving and stores a device-identity mapping. The launcher loads it without rewriting game profiles. The initial implementation targets muOS-Keys, not every controller or model.
+- **OSD and output image scaling:** a two-line main OSD and independently selectable Generated FPS display; Image Scale from 40% to 100% in 1% steps, globally or per game. Output is centered and reduced without changing internal resolution or OSD size.
+- **muOS configuration and distribution integration:** global/per-game menus, labelled experiments, reset references, aiming profiles, hotkeys, core association, launcher and service management provide the standalone muOS integration layer.
+
+### Attribution and project history
+
+These contributions are documented as V.V.mImo project work, with **Mark1.B.V211** as the reference release for this overview. When describing or crediting these fork-specific implementations, identify their V.V.mImo origin and distinguish subsequent third-party modifications from an official V.V.mImo release.
+
+**Dolphin Emulator and its contributors retain credit for the upstream emulator.** Third-party libraries, algorithms and assets retain their respective authorship and licenses. General techniques such as JIT compilation, circular buffers, OpenGL fences and frame generation predate this fork; this section does not claim their invention or establish worldwide priority.
+
+Not every mechanism benefits every game. Disabled or rejected experiments are not presented as proven improvements. A high FPS counter does not guarantee full-speed movement or synchronized sound; results vary by game, scene, device and settings. Compatibility and useful settings are recorded by exact game ID.
 
 ## Beta testers wanted
 
