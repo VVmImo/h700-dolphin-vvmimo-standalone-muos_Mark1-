@@ -119,7 +119,7 @@ Reports should include the device, muOS version, package/build, exact game ID, r
 - **In progress:** playable, but still needs adjustments.
 - **Cursed:** the game runs, but requires substantial development.
 
-These are user-reported categories, not promises of full speed or perfect graphics/audio. See the [complete GameCube and Wii compatibility catalogue](GAMECUBE-COMPATIBILITY.en.md) and the [repository README](README-REPOSITORY.en.md) for implementations, installation and recorded results.
+These are user-reported categories, not promises of full speed or perfect graphics/audio. See the [complete GameCube and Wii compatibility catalogue](GAMECUBE-COMPATIBILITY.en.md) and the [release documentation](README-REPOSITORY.en.md) for implementations, installation and recorded results.
 
 ## Original games required
 
